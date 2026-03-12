@@ -1,6 +1,6 @@
+package main;
 /**
  * UC16:
- * GOAL:
  *  - Create an array of passenger bogie capacities.
  *  - Manually sort the array using the Bubble Sort algorithm (no library sort).
  *  - Display the sorted capacities.
@@ -14,10 +14,7 @@ public class TrainMain {
         // 1) Create an array of passenger bogie capacities (example values).
         //    These numbers represent seat counts of different passenger bogies.
         int[] capacities = {72, 56, 24, 60, 90, 30};
-
-        // 2) Bubble Sort (ascending):
-        //    - We repeatedly walk through the array,
-        //    - compare each pair of ADJACENT elements,
+        // 2) Bubble Sort 
         for (int pass = 0; pass < capacities.length - 1; pass++) { // Outer loop: number of passes
             for (int i = 0; i < capacities.length - 1 - pass; i++) { // Inner loop: compare adjacent pairs
                 if (capacities[i] > capacities[i + 1]) {
@@ -28,7 +25,6 @@ public class TrainMain {
                 }
             }
         }
-
         // 3) Display the sorted capacities (ascending).
         System.out.print("Sorted capacities (ascending): ");
         for (int i = 0; i < capacities.length; i++) {

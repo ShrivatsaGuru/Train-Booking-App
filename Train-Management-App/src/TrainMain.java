@@ -1,40 +1,34 @@
 /**
- * UC16:
- * GOAL:
- *  - Create an array of passenger bogie capacities.
- *  - Manually sort the array using the Bubble Sort algorithm (no library sort).
- *  - Display the sorted capacities.
- *
- * @author Shrivatsa Guru
- * @version 16.0
+ *UC17:
+ *  - Create an array of bogie type names.
+ *  - Sort the array ALPHABETICALLY using Java's built-in Arrays.sort().
+ *  - Display the sorted result.
+ *@author Shrivatsa Guru
+ *@version 17.0
  */
+import java.util.Arrays;
+
 public class TrainMain {
 
     public static void main(String[] args) {
-        // 1) Create an array of passenger bogie capacities (example values).
-        //    These numbers represent seat counts of different passenger bogies.
-        int[] capacities = {72, 56, 24, 60, 90, 30};
+        // 1) Create an array of bogie type names (unsorted).
+        String[] bogieNames = {
+                "Sleeper",
+                "AC Chair",
+                "First Class",
+                "Cargo",
+                "Guard",
+                "Engine"
+        };
+        System.out.println("Before Sorting: ");
+        System.out.println(Arrays.toString(bogieNames));
+        // 2) Sort the array alphabetically using Arrays.sort().
+        //    This uses Java's built-in optimized sorting algorithm.
+        Arrays.sort(bogieNames);
 
-        // 2) Bubble Sort (ascending):
-        //    - We repeatedly walk through the array,
-        //    - compare each pair of ADJACENT elements,
-        for (int pass = 0; pass < capacities.length - 1; pass++) { // Outer loop: number of passes
-            for (int i = 0; i < capacities.length - 1 - pass; i++) { // Inner loop: compare adjacent pairs
-                if (capacities[i] > capacities[i + 1]) {
-                    // Swap capacities[i] and capacities[i + 1]
-                    int temp = capacities[i];
-                    capacities[i] = capacities[i + 1];
-                    capacities[i + 1] = temp;
-                }
-            }
-        }
-
-        // 3) Display the sorted capacities (ascending).
-        System.out.print("Sorted capacities (ascending): ");
-        for (int i = 0; i < capacities.length; i++) {
-            System.out.print(capacities[i]);
-            if (i < capacities.length - 1) System.out.print(" ");
-        }
-        System.out.println();
+        // 3) Display the sorted array.
+        //    Arrays.toString() converts the array into a readable String.
+        System.out.println("Sorted bogie names:");
+        System.out.println(Arrays.toString(bogieNames));
     }
 }

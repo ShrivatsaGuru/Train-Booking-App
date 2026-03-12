@@ -55,8 +55,14 @@
  *      stream() -> map(b -> b.capacity) -> reduce(0, Integer::sum)
  *  - Print the total seats across passenger bogie
  *  
+ * UC11 :
+ *  - Validate Train ID and Cargo Code formats using REGEX with Pattern + Matcher.
+ *  - Train ID example pattern: TRN-\\d{4}
+ *  - Cargo Code example pattern: PET-[A-Z]{2}
+ *  - Use matches() to ensure the ENTIRE input matches the required format.
+
  *@author Shrivatsa Guru
- *@version 10.0
+ *@version 11.0
  */
 public class TrainMain {
 
@@ -255,6 +261,35 @@ public class TrainMain {
 		// 5) Print the total seating capacity
 		System.out.println("\nUC10: Total seating capacity across passenger bogies:");
 		System.out.println(totalSeatingCapacity + " seats total");
+
+
+		// ===== UC11: Validate Train ID & Cargo Code using REGEX =====
+		// 1) Compile regex patterns with Pattern.
+		// 2) Create Matcher for user input.
+		// 3) Use matches() to check full-string format validity.
+		// Patterns:
+		//   - Train ID: TRN-\\d{4}  (TRN- followed by exactly 4 digits)
+		//   - Cargo Code: PET-[A-Z]{2} (PET- followed by exactly 2 uppercase letters)
+		java.util.regex.Pattern trainIdPattern = java.util.regex.Pattern.compile("TRN-\\d{4}");
+		java.util.regex.Pattern cargoCodePattern = java.util.regex.Pattern.compile("PET-[A-Z]{2}");
+
+		// Sample inputs to test (some valid, some invalid):
+		String[] trainIdSamples = { "TRN-1234", "TRAIN12", "TRN12A", "1234-TRN", "TRN-0001" };
+		String[] cargoCodeSamples = { "PET-AB", "PET-12", "pet-AB", "PET-ABC", "PET-ZZ" };
+
+		// Validate Train IDs
+		System.out.println("\nUC11: Train ID format check (pattern: TRN-\\d{4})");
+		for (String input : trainIdSamples) {
+			boolean isValid = trainIdPattern.matcher(input).matches(); // matches() -> full-string match
+			System.out.println("  " + input + " -> " + (isValid ? "VALID" : "INVALID"));
+		}
+
+		// Validate Cargo Codes
+		System.out.println("\nUC11: Cargo Code format check (pattern: PET-[A-Z]{2})");
+		for (String input : cargoCodeSamples) {
+			boolean isValid = cargoCodePattern.matcher(input).matches();
+			System.out.println("  " + input + " -> " + (isValid ? "VALID" : "INVALID"));
+		}
 
 
 

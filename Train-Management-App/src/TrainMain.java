@@ -49,41 +49,47 @@
  *  - Group bogies by TYPE using Collectors.groupingBy(...)
  *  - Output: Map<String, List<Bogie>> where key = type, value = bogies of that type
  *  
+ *  
+ * UC10:
+ *  - Compute TOTAL seating capacity using Stream:
+ *      stream() -> map(b -> b.capacity) -> reduce(0, Integer::sum)
+ *  - Print the total seats across passenger bogie
+ *  
  *@author Shrivatsa Guru
- *@version 8.0
+ *@version 10.0
  */
 public class TrainMain {
 
 
-	 static class Bogie {
-	        String name;
-	        int capacity;
-	        String type; // NEW for UC9 (e.g., "Passenger" or "Goods")
+	static class Bogie {
+		String name;
+		int capacity;
+		String type; // NEW for UC9 (e.g., "Passenger" or "Goods")
 
-	        // Old constructor kept for backward compatibility (UC7/UC8):
-	        Bogie(String name, int capacity) {
-	            this.name = name;
-	            this.capacity = capacity;
-	            this.type = null; // type is unknown in older UCs
-	        }
+		// Old constructor kept for backward compatibility (UC7/UC8):
+		Bogie(String name, int capacity) {
+			this.name = name;
+			this.capacity = capacity;
+			this.type = null; // type is unknown in older UCs
+		}
 
-	        // New constructor with type (for UC9 grouping):
-	        Bogie(String name, int capacity, String type) {
-	            this.name = name;
-	            this.capacity = capacity;
-	            this.type = type;
-	        }
+		// New constructor with type (for UC9 grouping):
+		Bogie(String name, int capacity, String type) {
+			this.name = name;
+			this.capacity = capacity;
+			this.type = type;
+		}
 
-	        String getName()     { return name; }
-	        int    getCapacity() { return capacity; }
-	        String getType()     { return type; }
+		String getName()     { return name; }
+		int    getCapacity() { return capacity; }
+		String getType()     { return type; }
 
-	        @Override
-	        public String toString() {
-	            // Show name and capacity; type is evident from the group header
-	            return name + " (" + capacity + " seats)";
-	        }
-	    }
+		@Override
+		public String toString() {
+			// Show name and capacity; type is evident from the group header
+			return name + " (" + capacity + " seats)";
+		}
+	}
 
 
 	public static void main(String[] args) {
@@ -234,6 +240,22 @@ public class TrainMain {
 				System.out.println("   - " + b);
 			}
 		}
+
+		// ===== UC10: TOTAL seating capacity using map(...) + reduce(...) =====
+		// Steps:
+		// 1) We already have a List<Bogie> named 'passengerBogies' from UC7.
+		// 2) Convert it into a stream.
+		// 3) map(...) to extract integer capacities.
+		// 4) reduce(0, Integer::sum) to add them all up into a single total.
+		int totalSeatingCapacity = passengerBogies
+				.stream()                       // make a stream from the list
+				.map(b -> b.capacity)           // transform Bogie -> Integer (capacity)
+				.reduce(0, Integer::sum);       // sum them all, starting from 0
+
+		// 5) Print the total seating capacity
+		System.out.println("\nUC10: Total seating capacity across passenger bogies:");
+		System.out.println(totalSeatingCapacity + " seats total");
+
 
 
 

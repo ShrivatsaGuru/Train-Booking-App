@@ -1,9 +1,5 @@
+package main;
 /**
- * UC1:
- *  - Print welcome banner
- *  - Initialize EMPTY train consist using ArrayList
- *  - Show initial bogie count (should be 0)
- *
  * UC2:
  *  - Use ArrayList operations to manage PASSENGER bogies
  *  - Add: "Sleeper", "AC Chair", "First Class"
@@ -17,10 +13,7 @@
 public class TrainMain {
 
     public static void main(String[] args) {
-        // ===== UC1: Initialize and display summary =====
-        System.out.println("=== Train Consist Management App ==="); 
         java.util.List<String> trainConsist = new java.util.ArrayList<>(); 
-        System.out.println("Initial bogie count: " + trainConsist.size()); 
         // ===== UC2: ArrayList operations for passenger bogies =====
         // 1) Add passenger bogies: "Sleeper", "AC Chair", "First Class"
         trainConsist.add("Sleeper");

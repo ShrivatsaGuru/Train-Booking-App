@@ -132,11 +132,7 @@ public class TrainMain {
 		}
 	}
 
-	static class InvalidCapacityException extends Exception {
-		InvalidCapacityException(String message) {
-			super(message);
-		}
-	}
+
 
 	static class PassengerBogie {
 		String name;

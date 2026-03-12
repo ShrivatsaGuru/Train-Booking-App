@@ -44,32 +44,47 @@
  *  - Use Java Streams to FILTER passenger bogies.
  *  - Condition: capacity > 60.
  *  - Collect the filtered bogies into a new List and print them.
+ *  
+ * UC9:
+ *  - Group bogies by TYPE using Collectors.groupingBy(...)
+ *  - Output: Map<String, List<Bogie>> where key = type, value = bogies of that type
+ *  
  *@author Shrivatsa Guru
  *@version 8.0
  */
 public class TrainMain {
 
-	static class Bogie {
-		// Fields (data we store for each bogie)
-		String name;
-		int capacity; // number of seats
 
-		// Constructor: runs when we write "new Bogie(name, capacity)"
-		Bogie(String name, int capacity) {
-			this.name = name;
-			this.capacity = capacity;
-		}
+	 static class Bogie {
+	        String name;
+	        int capacity;
+	        String type; // NEW for UC9 (e.g., "Passenger" or "Goods")
 
-		// Getters (handy if we want method references later)
-		String getName()     { return name; }
-		int    getCapacity() { return capacity; }
+	        // Old constructor kept for backward compatibility (UC7/UC8):
+	        Bogie(String name, int capacity) {
+	            this.name = name;
+	            this.capacity = capacity;
+	            this.type = null; // type is unknown in older UCs
+	        }
 
-		// toString() helps print a bogie nicely
-		@Override
-		public String toString() {
-			return name + " (" + capacity + " seats)";
-		}
-	}
+	        // New constructor with type (for UC9 grouping):
+	        Bogie(String name, int capacity, String type) {
+	            this.name = name;
+	            this.capacity = capacity;
+	            this.type = type;
+	        }
+
+	        String getName()     { return name; }
+	        int    getCapacity() { return capacity; }
+	        String getType()     { return type; }
+
+	        @Override
+	        public String toString() {
+	            // Show name and capacity; type is evident from the group header
+	            return name + " (" + capacity + " seats)";
+	        }
+	    }
+
 
 	public static void main(String[] args) {
 		// ===== UC1: Initialize and display summary =====
@@ -181,9 +196,9 @@ public class TrainMain {
 		// 2) Apply filter(...) with the condition: capacity > 60.
 		// 3) Collect the result back into a new List using Collectors.toList().
 		java.util.List<Bogie> highCapacityBogies = passengerBogies
-				.stream()                               // make a stream from the list
-				.filter(b -> b.capacity > 60)           // keep only bogies with capacity > 60
-				.collect(java.util.stream.Collectors.toList()); // turn the stream back into a List
+				.stream()
+				.filter(b -> b.capacity > 60)          
+				.collect(java.util.stream.Collectors.toList()); 
 
 		// 4) Display the filtered bogies:
 		System.out.println("\nUC8: Filtered passenger bogies (capacity > 60):");
@@ -194,6 +209,32 @@ public class TrainMain {
 				System.out.println(b.name + " - " + b.capacity + " seats");
 			}
 		}
+
+		// ===== UC9: GROUP bogies by TYPE using Collectors.groupingBy(...) =====
+		// We'll create a mixed list with both Passenger and Goods bogies.
+		java.util.List<Bogie> bogiesForGrouping = new java.util.ArrayList<>();
+		bogiesForGrouping.add(new Bogie("Sleeper", 72, "Passenger"));
+		bogiesForGrouping.add(new Bogie("AC Chair", 56, "Passenger"));
+		bogiesForGrouping.add(new Bogie("First Class", 24, "Passenger"));
+		bogiesForGrouping.add(new Bogie("Rectangular", 2, "Goods")); 
+		bogiesForGrouping.add(new Bogie("Cylindrical", 5, "Goods"));
+
+		java.util.Map<String, java.util.List<Bogie>> groupedByType =
+				bogiesForGrouping
+				.stream()
+				.collect(java.util.stream.Collectors.groupingBy(b -> b.type));
+
+		// Display the grouped structure in a readable way
+		System.out.println("\nUC9: Grouped bogies by TYPE (Map<String, List<Bogie>>):");
+		for (java.util.Map.Entry<String, java.util.List<Bogie>> entry : groupedByType.entrySet()) {
+			String typeKey = entry.getKey();
+			java.util.List<Bogie> list = entry.getValue();
+			System.out.println("> " + typeKey + ":");
+			for (Bogie b : list) {
+				System.out.println("   - " + b);
+			}
+		}
+
 
 
 	}

@@ -1,34 +1,46 @@
 /**
- *UC17:
- *  - Create an array of bogie type names.
- *  - Sort the array ALPHABETICALLY using Java's built-in Arrays.sort().
- *  - Display the sorted result.
- *@author Shrivatsa Guru
- *@version 17.0
+ * UC18:
+ *  - Create an array of bogie IDs (UNSORTED).
+ *  - Search for a specific bogie ID using LINEAR SEARCH.
+ *  - Compare each element one-by-one using equals().
+ *  - Stop searching as soon as a match is found.
+ *  - Display whether the bogie exists or not.
+ *  @author Shrivatsa Guru
+ *  @version 18.0
  */
-import java.util.Arrays;
-
 public class TrainMain {
 
     public static void main(String[] args) {
-        // 1) Create an array of bogie type names (unsorted).
-        String[] bogieNames = {
-                "Sleeper",
-                "AC Chair",
-                "First Class",
-                "Cargo",
-                "Guard",
-                "Engine"
+        // 1) Create an array of bogie IDs (unsorted).
+        String[] bogieIds = {
+                "BG105",
+                "BG101",
+                "BG110",
+                "BG103",
+                "BG108"
         };
-        System.out.println("Before Sorting: ");
-        System.out.println(Arrays.toString(bogieNames));
-        // 2) Sort the array alphabetically using Arrays.sort().
-        //    This uses Java's built-in optimized sorting algorithm.
-        Arrays.sort(bogieNames);
 
-        // 3) Display the sorted array.
-        //    Arrays.toString() converts the array into a readable String.
-        System.out.println("Sorted bogie names:");
-        System.out.println(Arrays.toString(bogieNames));
+        // 2) Define the bogie ID we want to search for.
+        String searchKey = "BG103";
+
+        // 3) Flag to track whether the bogie is found.
+        boolean found = false;
+
+        // 4) Linear Search:
+        //    Traverse the array from start to end.
+        for (int i = 0; i < bogieIds.length; i++) {
+            // Compare current element with the search key
+            if (bogieIds[i].equals(searchKey)) {
+                found = true;     // Match found
+                break;            // Stop searching immediately
+            }
+        }
+
+        // 5) Display the result.
+        if (found) {
+            System.out.println("Bogie ID " + searchKey + " exists in the train.");
+        } else {
+            System.out.println("Bogie ID " + searchKey + " does NOT exist in the train.");
+        }
     }
 }

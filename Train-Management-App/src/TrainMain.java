@@ -1,46 +1,55 @@
 /**
- * UC18:
- *  - Create an array of bogie IDs (UNSORTED).
- *  - Search for a specific bogie ID using LINEAR SEARCH.
- *  - Compare each element one-by-one using equals().
- *  - Stop searching as soon as a match is found.
- *  - Display whether the bogie exists or not.
- *  @author Shrivatsa Guru
- *  @version 18.0
+ * UC19:
+ *  - Use BINARY SEARCH on a SORTED array of bogie IDs to find a specific ID.
+ *  - Initialize low/high indexes, compute mid, compare using compareTo(), and
+ *    narrow the search range until found or exhausted.
+ *  - Display whether the bogie ID exists.
+ *@author Shrivatsa Guru
+ *@version 19.0
  */
 public class TrainMain {
 
     public static void main(String[] args) {
-        // 1) Create an array of bogie IDs (unsorted).
-        String[] bogieIds = {
-                "BG105",
-                "BG101",
-                "BG110",
-                "BG103",
-                "BG108"
+        // 1) Prepare a SORTED array of bogie IDs (lexicographic order).
+        String[] sortedBogieIds = {
+                "BG101", "BG102", "BG103", "BG104", "BG105",
+                "BG106", "BG107", "BG108", "BG109", "BG110"
         };
 
         // 2) Define the bogie ID we want to search for.
-        String searchKey = "BG103";
+        String searchKey = "BG108";
 
-        // 3) Flag to track whether the bogie is found.
-        boolean found = false;
+        // 3) Initialize the search bounds: low (start index) and high (end index).
+        int low = 0;
+        int high = sortedBogieIds.length - 1;
 
-        // 4) Linear Search:
-        //    Traverse the array from start to end.
-        for (int i = 0; i < bogieIds.length; i++) {
-            // Compare current element with the search key
-            if (bogieIds[i].equals(searchKey)) {
-                found = true;     // Match found
-                break;            // Stop searching immediately
+        // 4) Variable to remember whether we found the key (and at which index).
+        int foundIndex = -1; // stays -1 if not found
+
+        // 5) Binary Search loop:
+
+        while (low <= high) {
+            // Compute middle index safely:
+            int mid = low + (high - low) / 2;
+
+            int comparison = searchKey.compareTo(sortedBogieIds[mid]);
+
+            if (comparison == 0) {
+                // Found the key at index 'mid'
+                foundIndex = mid;
+                break; // Stop the search immediately
+            } else if (comparison > 0) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
         }
 
-        // 5) Display the result.
-        if (found) {
-            System.out.println("Bogie ID " + searchKey + " exists in the train.");
+        // 6) Display the result.
+        if (foundIndex != -1) {
+            System.out.println("Bogie ID " + searchKey + " found at index " + foundIndex + ".");
         } else {
-            System.out.println("Bogie ID " + searchKey + " does NOT exist in the train.");
+            System.out.println("Bogie ID " + searchKey + " NOT found in the train.");
         }
     }
 }

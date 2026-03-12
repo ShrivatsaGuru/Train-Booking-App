@@ -74,9 +74,15 @@
  *      2) Measure time for loop-based filtering (capacity > 60).
  *      3) Measure time for stream-based filtering (same condition).
  *      4) Print sizes of results and durations.
- *      
+ * 
+ * UC14:
+ *  - Create a custom CHECKED exception: InvalidCapacityException (extends Exception).
+ *  - Create PassengerBogie with validation in its constructor.
+ *  - If capacity <= 0, throw InvalidCapacityException.
+ *  - Demonstrate safe object creation with try/catch so invalid bogies are never added
+
  *@author Shrivatsa Guru
- *@version 13.0
+ *@version 14.0
  */
 public class TrainMain {
 
@@ -126,8 +132,31 @@ public class TrainMain {
 		}
 	}
 
+	static class InvalidCapacityException extends Exception {
+		InvalidCapacityException(String message) {
+			super(message);
+		}
+	}
 
+	static class PassengerBogie {
+		String name;
+		int capacity;
 
+		PassengerBogie(String name, int capacity) throws InvalidCapacityException {
+			// Validate as soon as we construct the object.
+			if (capacity <= 0) {
+				throw new InvalidCapacityException(
+						"Capacity must be > 0 for passenger bogie '" + name + "'. Provided: " + capacity);
+			}
+			this.name = name;
+			this.capacity = capacity;
+		}
+
+		@Override
+		public String toString() {
+			return name + " (" + capacity + " seats) [validated]";
+		}
+	}
 	public static void main(String[] args) {
 		// ===== UC1: Initialize and display summary =====
 		System.out.println("=== Train Consist Management App ==="); // welcome message
@@ -388,6 +417,42 @@ public class TrainMain {
 		System.out.println("Stream-based filtered count : " + streamFiltered.size());
 		System.out.println("Loop time   : " + loopElapsedNanos + " ns (" + (loopElapsedNanos / 1_000_000.0) + " ms)");
 		System.out.println("Stream time : " + streamElapsedNanos + " ns (" + (streamElapsedNanos / 1_000_000.0) + " ms)");
+
+
+		// ===== UC14: Custom Exception – Prevent invalid passenger bogies =====
+		System.out.println("\nUC14: Creating PassengerBogie with validation (throws InvalidCapacityException)...");
+
+		java.util.List<PassengerBogie> validatedPassengerBogies = new java.util.ArrayList<>();
+
+		// A) Try to create an INVALID passenger bogie (capacity = 0) -> should FAIL and be caught.
+		try {
+			PassengerBogie invalid = new PassengerBogie("InvalidZero", 0);
+			// This line should NOT run, because the constructor throws before this point.
+			validatedPassengerBogies.add(invalid);
+		} catch (InvalidCapacityException e) {
+			System.out.println("Failed to create passenger bogie: " + e.getMessage());
+		}
+
+		// B) Try another INVALID case (negative capacity) -> should FAIL.
+		try {
+			PassengerBogie invalidNeg = new PassengerBogie("InvalidNegative", -5);
+			validatedPassengerBogies.add(invalidNeg);
+		} catch (InvalidCapacityException e) {
+			System.out.println("Failed to create passenger bogie: " + e.getMessage());
+		}
+
+		// C) Create a VALID passenger bogie -> should PASS and get added to the list.
+		try {
+			PassengerBogie valid = new PassengerBogie("Sleeper-Validated", 72);
+			validatedPassengerBogies.add(valid);
+			System.out.println("Created successfully: " + valid);
+		} catch (InvalidCapacityException e) {
+			// This won't run for valid input
+			System.out.println("Unexpected error: " + e.getMessage());
+		}
+
+		// Show what's finally in the validated list (only valid bogies).
+		System.out.println("Validated passenger bogies in the consist: " + validatedPassengerBogies);
 
 
 	}

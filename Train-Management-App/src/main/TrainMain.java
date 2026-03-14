@@ -1,3 +1,4 @@
+package main;
 /**
  *UC17:
  *  - Create an array of bogie type names.

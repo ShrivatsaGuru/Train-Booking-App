@@ -1,3 +1,4 @@
+package main;
 /**
  * UC19:
  *  - Use BINARY SEARCH on a SORTED array of bogie IDs to find a specific ID.

@@ -1,3 +1,4 @@
+package main;
 /**
  * UC18:
  *  - Create an array of bogie IDs (UNSORTED).

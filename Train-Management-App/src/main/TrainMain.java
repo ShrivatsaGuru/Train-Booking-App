@@ -1,3 +1,4 @@
+package main;
 /**
  * UC20:
  *  - Prevent search operations when the train has NO bogies.
